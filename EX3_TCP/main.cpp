@@ -43,7 +43,6 @@ int main()
 	}
 	addSocket(listenSocket, eSocketStatus::LISTEN);
 
-
 	while (true)
 	{
 		cout << "Web server is running" << endl << endl;

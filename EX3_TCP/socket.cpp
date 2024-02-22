@@ -129,7 +129,6 @@ void receiveMessage(int index)
 				sockets[index].sendSubType = eRequestType::TRACE;
 				return;
 			}
-
 		}
 	}
 
@@ -150,12 +149,12 @@ void sendMessage(int index) {
 		if (fileToDelete.is_open()) {
 			fileToDelete.close();
 			if (remove(header.fileLocation.c_str()) == 0)
-				header.errorCode = "200 OK";
+				header.code = "200 OK";
 			else
-				header.errorCode = "500 Internal Server Error";
+				header.code = "500 Internal Server Error";
 		}
 		else {
-			header.errorCode = "404 Not Found";
+			header.code = "404 Not Found";
 		}
 
 		string response = createDeleteHeader(header);
@@ -168,12 +167,12 @@ void sendMessage(int index) {
 
 		ifstream file((header.fileLocation));
 		string content = "<h1> 404 Not Found <h1>";
-		header.errorCode = "404 Not Found";
+		header.code = "404 Not Found";
 		if (file.good())
 		{
 			string fileContent((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 			content = fileContent;
-			header.errorCode = "200 OK";
+			header.code = "200 OK";
 		}
 		file.close();
 		string response = createHeadOrGetHeader(header, content, sockets[index].sendSubType);
@@ -201,21 +200,21 @@ void sendMessage(int index) {
 	}
 
 	else if (sockets[index].sendSubType == eRequestType::PUT) {
-		header.errorCode = "200 OK";
+		header.code = "200 OK";
 		ofstream createdFile;
 
 		createdFile.open(header.fileLocation, ios::in);
 		if (!createdFile.is_open()) {
 			createdFile.open(header.fileLocation, ios::trunc);
-			header.errorCode = "201 Created";
+			header.code = "201 Created";
 		}
 
 		if (!createdFile.is_open())
-			header.errorCode = "500 Internal Server Error";
+			header.code = "500 Internal Server Error";
 
 		else {
 			if (header.body.size() == 0)
-				header.errorCode = "204 No Content";
+				header.code = "204 No Content";
 
 			else {
 				createdFile << header.body;
@@ -251,6 +250,7 @@ void sendMessage(int index) {
 void removeLastRequestFromBuffer(SocketState* sockets, int index)
 {
 	int bufferLen = strlen(sockets[index].buffer);
+
 	memcpy(sockets[index].buffer, &sockets[index].buffer[bufferLen], sockets[index].len - bufferLen);
 	sockets[index].len -= bufferLen;
 }

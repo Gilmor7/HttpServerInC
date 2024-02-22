@@ -18,7 +18,7 @@ struct ResponeHeader
 	string language;
 	string fileLocation;
 	string body;
-	string errorCode;
+	string code;
 };
 
 string getMethodName(string SocketBuffer);
