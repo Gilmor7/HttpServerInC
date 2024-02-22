@@ -179,7 +179,6 @@ void sendMessage(int index) {
 		string response = createHeadOrGetMethodHeader(header, content, sockets[index].sendSubType);
 		strcpy(sendBuff, response.c_str());
 		removeLastRequestFromBuffer(sockets, index);
-
 	}
 
 	else if (sockets[index].sendSubType == eRequestType::OPTIONS)

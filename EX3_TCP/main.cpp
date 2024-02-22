@@ -45,7 +45,7 @@ int main()
 
 	while (true)
 	{
-		cout << "Web server is running" << endl << endl;
+		cout << "Web server is running and listening on port: " << PORT << endl << endl;
 		fd_set waitRecv;
 		FD_ZERO(&waitRecv);
 		for (int i = 0; i < MAX_SOCKETS; i++)
