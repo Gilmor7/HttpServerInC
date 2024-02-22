@@ -3,13 +3,13 @@
 
 enum eRequestType
 {
-	OPTIONS,
 	GET,
-	HEAD,
 	POST,
 	PUT,
-	_DELETE,
-	TRACE
+	TRACE,
+	HEAD,
+	OPTIONS,
+	_DELETE
 };
 
 #endif

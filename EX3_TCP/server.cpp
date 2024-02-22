@@ -1,6 +1,6 @@
 #include "server.h"
 
-string createHeadOrGetHeader(ResponeHeader responeHeader, string content, int requestType)
+string createHeadOrGetMethodHeader(ResponeHeader responeHeader, string content, int requestType)
 {
 	string header;
 	ostringstream oss;
@@ -22,7 +22,7 @@ string createHeadOrGetHeader(ResponeHeader responeHeader, string content, int re
 	return header;
 }
 
-string getFileLocation(string SocketBuffer, string lang)
+string getHTMLFileLocation(string SocketBuffer, string lang)
 {
 	int firstSpaceIndex = SocketBuffer.find(" ");
 	int SecondSpaceIndex = SocketBuffer.find(" ", firstSpaceIndex + 1, 1);
@@ -43,7 +43,7 @@ string getFileLocation(string SocketBuffer, string lang)
 	return FileLocation;
 }
 
-string createOptionsHeader(ResponeHeader responeHeader)
+string createOptionsMethodHeader(ResponeHeader responeHeader)
 {
 	string header;
 	ostringstream oss;
@@ -60,27 +60,27 @@ string createOptionsHeader(ResponeHeader responeHeader)
 	return header;
 }
 
-ResponeHeader analayzeSendBufferString(string SocketBuffer)
+ResponeHeader convertSendBufferString(string SocketBuffer)
 {
 	ResponeHeader header;
 
 	header.request = string(SocketBuffer);
-	header.method = getMethodName(SocketBuffer);
-	header.version = getHttpVersion(SocketBuffer);
-	header.language = getLanguage(SocketBuffer);
-	header.fileLocation = getFileLocation(SocketBuffer, header.language);
-	header.body = getBody(SocketBuffer);
+	header.method = getMethodType(SocketBuffer);
+	header.version = getRequestHTTPVersion(SocketBuffer);
+	header.language = getSelectedLanguage(SocketBuffer);
+	header.fileLocation = getHTMLFileLocation(SocketBuffer, header.language);
+	header.body = getRequestBody(SocketBuffer);
 
 	return header;
 }
 
-string getMethodName(string SocketBuffer)
+string getMethodType(string SocketBuffer)
 {
 	int firstSpaceIndex = SocketBuffer.find(" ");
 	return SocketBuffer.substr(0, firstSpaceIndex);
 }
 
-string getHttpVersion(string SocketBuffer)
+string getRequestHTTPVersion(string SocketBuffer)
 {
 	int firstSpaceIndex = SocketBuffer.find(" ");
 	int SecondSpaceIndex = SocketBuffer.find(" ", firstSpaceIndex + 1, 1);
@@ -89,7 +89,7 @@ string getHttpVersion(string SocketBuffer)
 	return SocketBuffer.substr(SecondSpaceIndex + 1, ThirdSpaceIndex - SecondSpaceIndex - 1);
 }
 
-string getLanguage(string SocketBuffer)
+string getSelectedLanguage(string SocketBuffer)
 {
 	int langLen = strlen("lang=");
 	int langIndex = SocketBuffer.find("lang=");
@@ -106,13 +106,13 @@ string getLanguage(string SocketBuffer)
 	return SocketBuffer.substr(langIndex + langLen, (secondSpaceIndex - (langIndex + langLen)));
 }
 
-string getBody(string SocketBuffer)
+string getRequestBody(string SocketBuffer)
 {
 	int bodyIndex = SocketBuffer.find("\r\n\r\n");
 	return SocketBuffer.substr(bodyIndex + 4, SocketBuffer.length() - bodyIndex - 4);
 }
 
-string createPostHeader(ResponeHeader responeHeader)
+string createPostMethodHeader(ResponeHeader responeHeader)
 {
 	ostringstream oss;
 	string header;
@@ -134,7 +134,7 @@ string createPostHeader(ResponeHeader responeHeader)
 	return header;
 }
 
-string createPutHeader(ResponeHeader responeHeader) {
+string createPutMethodHeader(ResponeHeader responeHeader) {
 	string header;
 	ostringstream oss;
 
@@ -147,7 +147,7 @@ string createPutHeader(ResponeHeader responeHeader) {
 	return header;
 }
 
-string createTraceHeader(ResponeHeader responeHeader) {
+string createTraceMethodHeader(ResponeHeader responeHeader) {
 	string header;
 	ostringstream oss;
 
@@ -162,7 +162,7 @@ string createTraceHeader(ResponeHeader responeHeader) {
 	return header;
 }
 
-string createDeleteHeader(ResponeHeader responeHeader) {
+string createDeleteMethodHeader(ResponeHeader responeHeader) {
 	string header;
 	ostringstream oss;
 

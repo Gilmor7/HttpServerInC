@@ -21,18 +21,18 @@ struct ResponeHeader
 	string code;
 };
 
-string getMethodName(string SocketBuffer);
-string getHttpVersion(string SocketBuffer);
-string getLanguage(string SocketBuffer);
-string getBody(string SocketBuffer);
-string getFileLocation(string SocketBuffer, string lang);
-ResponeHeader analayzeSendBufferString(string SocketBuffer);
+string getMethodType(string SocketBuffer);
+string getRequestHTTPVersion(string SocketBuffer);
+string getSelectedLanguage(string SocketBuffer);
+string getRequestBody(string SocketBuffer);
+string getHTMLFileLocation(string SocketBuffer, string lang);
+ResponeHeader convertSendBufferString(string SocketBuffer);
 
-string createOptionsHeader(ResponeHeader responeHeader);
-string createPostHeader(ResponeHeader responeHeader);
-string createDeleteHeader(ResponeHeader responeHeader);
-string createPutHeader(ResponeHeader responeHeader);
-string createTraceHeader(ResponeHeader responeHeader);
-string createHeadOrGetHeader(ResponeHeader responeHeader, string content, int requestType);
+string createOptionsMethodHeader(ResponeHeader responeHeader);
+string createPostMethodHeader(ResponeHeader responeHeader);
+string createDeleteMethodHeader(ResponeHeader responeHeader);
+string createPutMethodHeader(ResponeHeader responeHeader);
+string createTraceMethodHeader(ResponeHeader responeHeader);
+string createHeadOrGetMethodHeader(ResponeHeader responeHeader, string content, int requestType);
 
 #endif

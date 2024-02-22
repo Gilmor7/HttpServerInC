@@ -139,7 +139,7 @@ void sendMessage(int index) {
 	char sendBuff[2000];
 	SOCKET msgSocket = sockets[index].id;
 	string SocketBufferAsString(sockets[index].buffer);
-	ResponeHeader header = analayzeSendBufferString(SocketBufferAsString);
+	ResponeHeader header = convertSendBufferString(SocketBufferAsString);
 
 	if (sockets[index].sendSubType == eRequestType::_DELETE)
 	{
@@ -157,7 +157,7 @@ void sendMessage(int index) {
 			header.code = "404 Not Found";
 		}
 
-		string response = createDeleteHeader(header);
+		string response = createDeleteMethodHeader(header);
 		strcpy(sendBuff, response.c_str());
 		removeLastRequestFromBuffer(sockets, index);
 	}
@@ -167,6 +167,7 @@ void sendMessage(int index) {
 
 		ifstream file((header.fileLocation));
 		string content = "<h1> 404 Not Found <h1>";
+
 		header.code = "404 Not Found";
 		if (file.good())
 		{
@@ -175,7 +176,7 @@ void sendMessage(int index) {
 			header.code = "200 OK";
 		}
 		file.close();
-		string response = createHeadOrGetHeader(header, content, sockets[index].sendSubType);
+		string response = createHeadOrGetMethodHeader(header, content, sockets[index].sendSubType);
 		strcpy(sendBuff, response.c_str());
 		removeLastRequestFromBuffer(sockets, index);
 
@@ -183,7 +184,8 @@ void sendMessage(int index) {
 
 	else if (sockets[index].sendSubType == eRequestType::OPTIONS)
 	{
-		string response = createOptionsHeader(header);
+		string response = createOptionsMethodHeader(header);
+
 		strcpy(sendBuff, response.c_str());
 		removeLastRequestFromBuffer(sockets, index);
 	}
@@ -194,7 +196,7 @@ void sendMessage(int index) {
 		{
 			cout << header.body << endl;
 		}
-		string response = createPostHeader(header);
+		string response = createPostMethodHeader(header);
 		strcpy(sendBuff, response.c_str());
 		removeLastRequestFromBuffer(sockets, index);
 	}
@@ -222,7 +224,7 @@ void sendMessage(int index) {
 
 			createdFile.close();
 		}
-		string response = createPutHeader(header);
+		string response = createPutMethodHeader(header);
 		strcpy(sendBuff, response.c_str());
 		removeLastRequestFromBuffer(sockets, index);
 
@@ -230,7 +232,8 @@ void sendMessage(int index) {
 
 	else if (sockets[index].sendSubType == eRequestType::TRACE)
 	{
-		string response = createTraceHeader(header);
+		string response = createTraceMethodHeader(header);
+
 		strcpy(sendBuff, response.c_str());
 		removeLastRequestFromBuffer(sockets, index);
 	}
