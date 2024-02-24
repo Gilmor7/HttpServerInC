@@ -148,7 +148,7 @@ void sendMessage(int index) {
 	char sendBuff[2000];
 	SOCKET msgSocket = sockets[index].id;
 	string SocketBufferAsString(sockets[index].buffer);
-	ResponeHeader header = convertSendBufferString(SocketBufferAsString);
+	ResponeHeader header = convertSendBufferStringToResponseHeader(SocketBufferAsString);
 
 	switch (sockets[index].sendSubType)
 	{

@@ -26,7 +26,7 @@ string getRequestHTTPVersion(string SocketBuffer);
 string getSelectedLanguage(string SocketBuffer);
 string getRequestBody(string SocketBuffer);
 string getHTMLFileLocation(string SocketBuffer, string lang);
-ResponeHeader convertSendBufferString(string SocketBuffer);
+ResponeHeader convertSendBufferStringToResponseHeader(string SocketBuffer);
 
 string createOptionsMethodHeader(ResponeHeader responeHeader);
 string createPostMethodHeader(ResponeHeader responeHeader);

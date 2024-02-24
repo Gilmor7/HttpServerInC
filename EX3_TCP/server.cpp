@@ -60,7 +60,7 @@ string createOptionsMethodHeader(ResponeHeader responeHeader)
 	return header;
 }
 
-ResponeHeader convertSendBufferString(string SocketBuffer)
+ResponeHeader convertSendBufferStringToResponseHeader(string SocketBuffer)
 {
 	ResponeHeader header;
 
