@@ -226,16 +226,28 @@ void handleOptionsRequest(int index, char* sendBuff, ResponeHeader* header)
 	string response = createOptionsMethodHeader(*header);
 
 	strcpy(sendBuff, response.c_str());
-	removeLastRequestFromBuffer(sockets, index);
 }
 
 void handlePostRequest(int index, char* sendBuff, ResponeHeader* header)
 {
-	if (header->body.size() != 0)
-	{
-		cout << header->body << endl;
+	std::string filePath = header->fileLocation;
+
+	std::ofstream outFile;
+
+	std::ifstream fileTest(filePath);
+	if (fileTest.good()) {
+		header->code = "409 Conflict";
+		header->body = "The file already exists.";
+		fileTest.close();
 	}
-	string response = createPostMethodHeader(*header);
+	else {
+		outFile.open(filePath, std::ios::out);
+		outFile << header->body;
+		outFile.close();
+		header->code = "201 Created";
+	}
+
+	std::string response = createPostMethodHeader(*header);
 	strcpy(sendBuff, response.c_str());
 }
 
