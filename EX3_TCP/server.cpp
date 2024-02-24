@@ -32,12 +32,12 @@ string getHTMLFileLocation(string SocketBuffer, string lang)
 
 	FileLocation = FileLocation.substr(1, questionSignIndex - 1);
 	fileFullPath << "c:\\temp\\";
-	if (lang != "-1")
+	if (lang == "-1")
 	{
-		fileFullPath << lang << "\\";
+		lang = "en";
 	}
 
-	fileFullPath << FileLocation;
+	fileFullPath << lang << "\\" << FileLocation;
 	FileLocation = fileFullPath.str();
 	
 	return FileLocation;
