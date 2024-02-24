@@ -116,12 +116,6 @@ string createPostMethodHeader(ResponeHeader responeHeader)
 {
 	stringstream ss;
 	string header;
-
-	responeHeader.code = "200 OK";
-	if (responeHeader.body.length() == 0)
-	{
-		responeHeader.code = "204 No Content";
-	}
 	
 	ss << responeHeader.version << " " << responeHeader.code << " \r\n";
 	ss << "Request Method: " << responeHeader.method << "\r\n";
