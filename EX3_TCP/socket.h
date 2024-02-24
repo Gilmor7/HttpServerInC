@@ -5,6 +5,7 @@
 #pragma comment(lib, "Ws2_32.lib")
 #include <winsock2.h>
 #include "server.h"
+#include <cstring>
 
 using namespace std;
 
@@ -33,6 +34,13 @@ void acceptConnection(int index);
 void receiveMessage(int index);
 void sendMessage(int index);
 void removeLastRequestFromBuffer(SocketState* sockets, int index);
+
+void handleDeleteRequest(int index, char* sendBuff, ResponeHeader* header);
+void handleGetOrHeadRequest(int index, char* sendBuff, ResponeHeader* header);
+void handleOptionsRequest(int index, char* sendBuff, ResponeHeader* header);
+void handlePostRequest(int index, char* sendBuff, ResponeHeader* header);
+void handlePutRequest(int index, char* sendBuff, ResponeHeader* header);
+void handleTraceRequest(int index, char* sendBuff, ResponeHeader* header);
 
 //Global variables
 const int MAX_SOCKETS = 60;
