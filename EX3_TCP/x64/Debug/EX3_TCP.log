@@ -1,5 +1,0 @@
-﻿  main.cpp
-  socket.cpp
-C:\Users\Gil\Desktop\Studies\Academy\Year_C\ComputerNetworks\EX3_TCP\EX3_TCP\socket.cpp(253,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
-  EX3_TCP.vcxproj -> C:\Users\Gil\Desktop\Studies\Academy\Year_C\ComputerNetworks\EX3_TCP\x64\Debug\EX3_TCP.exe
