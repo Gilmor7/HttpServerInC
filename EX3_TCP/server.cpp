@@ -3,21 +3,21 @@
 string createHeadOrGetMethodHeader(ResponeHeader responeHeader, string content, int requestType)
 {
 	string header;
-	ostringstream oss;
+	stringstream ss;
 
-	oss << responeHeader.version << " " << responeHeader.code << " \r\n";
-	oss << "Request Method: " << responeHeader.method << "\r\n";
-	oss << "Cache-Control: no-cache, private\r\n";
-	oss << "Content-Type: text/html; charset=UTF-8\r\n";
-	oss << "Content-Length: " << content.length() << "\r\n";
+	ss << responeHeader.version << " " << responeHeader.code << " \r\n";
+	ss << "Request Method: " << responeHeader.method << "\r\n";
+	ss << "Cache-Control: no-cache, private\r\n";
+	ss << "Content-Type: text/html; charset=UTF-8\r\n";
+	ss << "Content-Length: " << content.length() << "\r\n";
 	if (responeHeader.language != "-1")
-		oss << "Content-Language: " << responeHeader.language << "\r\n";
+		ss << "Content-Language: " << responeHeader.language << "\r\n";
 	
-	oss << "\r\n";
+	ss << "\r\n";
 	if (requestType == eRequestType::GET)
-		oss << content;
+		ss << content;
 
-	header = oss.str();
+	header = ss.str();
 	
 	return header;
 }
@@ -25,42 +25,42 @@ string createHeadOrGetMethodHeader(ResponeHeader responeHeader, string content, 
 string getHTMLFileLocation(string SocketBuffer, string lang)
 {
 	int firstSpaceIndex = SocketBuffer.find(" ");
-	int SecondSpaceIndex = SocketBuffer.find(" ", firstSpaceIndex + 1, 1);
-	string FileLocation = SocketBuffer.substr(firstSpaceIndex + 1, SecondSpaceIndex - firstSpaceIndex);
-	int questionSignIndex = FileLocation.find("?");
-	ostringstream fileFullPath;
+	int secondSpaceIndex = SocketBuffer.find(" ", firstSpaceIndex + 1, 1);
+	string requestedFileLocation = SocketBuffer.substr(firstSpaceIndex + 1, secondSpaceIndex - firstSpaceIndex);
+	int questionSignIndex = requestedFileLocation.find("?");
+	stringstream filePath;
 
-	FileLocation = FileLocation.substr(1, questionSignIndex - 1);
-	fileFullPath << "c:\\temp\\";
-	if (lang != "-1")
+	requestedFileLocation = requestedFileLocation.substr(1, questionSignIndex - 1);
+	filePath << "c:\\temp\\";
+	if (lang == "-1")
 	{
-		fileFullPath << lang << "\\";
+		lang = "en";
 	}
 
-	fileFullPath << FileLocation;
-	FileLocation = fileFullPath.str();
+	filePath << lang << "\\" << requestedFileLocation;
+	requestedFileLocation = filePath.str();
 	
-	return FileLocation;
+	return requestedFileLocation;
 }
 
 string createOptionsMethodHeader(ResponeHeader responeHeader)
 {
 	string header;
-	ostringstream oss;
+	stringstream ss;
 	
 	responeHeader.code = "200 OK";
-	oss << responeHeader.version << " " << responeHeader.code << " \r\n";
-	oss << "Request Method: " << responeHeader.method << "\r\n";
-	oss << "Allow: OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE\r\n";
-	oss << "Content-Type: text/html; charset=UTF-8\r\n";
-	oss << "Content-Length: 0\r\n";
-	oss << "\r\n";
-	header = oss.str();
+	ss << responeHeader.version << " " << responeHeader.code << " \r\n";
+	ss << "Request Method: " << responeHeader.method << "\r\n";
+	ss << "Allow: OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE\r\n";
+	ss << "Content-Type: text/html; charset=UTF-8\r\n";
+	ss << "Content-Length: 0\r\n";
+	ss << "\r\n";
+	header = ss.str();
 
 	return header;
 }
 
-ResponeHeader convertSendBufferString(string SocketBuffer)
+ResponeHeader convertSendBufferStringToResponseHeader(string SocketBuffer)
 {
 	ResponeHeader header;
 
@@ -83,10 +83,10 @@ string getMethodType(string SocketBuffer)
 string getRequestHTTPVersion(string SocketBuffer)
 {
 	int firstSpaceIndex = SocketBuffer.find(" ");
-	int SecondSpaceIndex = SocketBuffer.find(" ", firstSpaceIndex + 1, 1);
-	int ThirdSpaceIndex = SocketBuffer.find("\r", SecondSpaceIndex + 1, 1);
+	int secondSpaceIndex = SocketBuffer.find(" ", firstSpaceIndex + 1, 1);
+	int thirdSpaceIndex = SocketBuffer.find("\r", secondSpaceIndex + 1, 1);
 
-	return SocketBuffer.substr(SecondSpaceIndex + 1, ThirdSpaceIndex - SecondSpaceIndex - 1);
+	return SocketBuffer.substr(secondSpaceIndex + 1, thirdSpaceIndex - secondSpaceIndex - 1);
 }
 
 string getSelectedLanguage(string SocketBuffer)
@@ -114,7 +114,7 @@ string getRequestBody(string SocketBuffer)
 
 string createPostMethodHeader(ResponeHeader responeHeader)
 {
-	ostringstream oss;
+	stringstream ss;
 	string header;
 
 	responeHeader.code = "200 OK";
@@ -123,54 +123,54 @@ string createPostMethodHeader(ResponeHeader responeHeader)
 		responeHeader.code = "204 No Content";
 	}
 	
-	oss << responeHeader.version << " " << responeHeader.code << " \r\n";
-	oss << "Request Method: " << responeHeader.method << "\r\n";
-	oss << "Content-Type: text/html; charset=UTF-8\r\n";
-	oss << "Content-Length: " << responeHeader.body.length() << "\r\n";
-	oss << "\r\n";
-	oss << responeHeader.body;
-	header = oss.str();
+	ss << responeHeader.version << " " << responeHeader.code << " \r\n";
+	ss << "Request Method: " << responeHeader.method << "\r\n";
+	ss << "Content-Type: text/html; charset=UTF-8\r\n";
+	ss << "Content-Length: " << responeHeader.body.length() << "\r\n";
+	ss << "\r\n";
+	ss << responeHeader.body;
+	header = ss.str();
 
 	return header;
 }
 
 string createPutMethodHeader(ResponeHeader responeHeader) {
 	string header;
-	ostringstream oss;
+	stringstream ss;
 
-	oss << responeHeader.version << " " << responeHeader.code << " \r\n";
-	oss << "Content-Type: text/html; charset=UTF-8\r\n";
-	oss << "Content-Length: " << 0 << "\r\n";
-	oss << "\r\n";
-	header = oss.str();
+	ss << responeHeader.version << " " << responeHeader.code << " \r\n";
+	ss << "Content-Type: text/html; charset=UTF-8\r\n";
+	ss << "Content-Length: " << 0 << "\r\n";
+	ss << "\r\n";
+	header = ss.str();
 
 	return header;
 }
 
 string createTraceMethodHeader(ResponeHeader responeHeader) {
 	string header;
-	ostringstream oss;
+	stringstream ss;
 
 	responeHeader.code = "200 OK";
-	oss << responeHeader.version << " " << responeHeader.code << " \r\n";
-	oss << "Content-Type: text/html; charset=UTF-8\r\n";
-	oss << "Content-Length: " << responeHeader.request.size() << "\r\n";
-	oss << "\r\n";
-	oss << responeHeader.request;
-	header = oss.str();
+	ss << responeHeader.version << " " << responeHeader.code << " \r\n";
+	ss << "Content-Type: text/html; charset=UTF-8\r\n";
+	ss << "Content-Length: " << responeHeader.request.size() << "\r\n";
+	ss << "\r\n";
+	ss << responeHeader.request;
+	header = ss.str();
 
 	return header;
 }
 
 string createDeleteMethodHeader(ResponeHeader responeHeader) {
 	string header;
-	ostringstream oss;
+	stringstream ss;
 
-	oss << responeHeader.version << " " << responeHeader.code << " \r\n";
-	oss << "Content-Type: text/html; charset=UTF-8\r\n";
-	oss << "Content-Length: " << 0 << "\r\n";
-	oss << "\r\n";
-	header = oss.str();
+	ss << responeHeader.version << " " << responeHeader.code << " \r\n";
+	ss << "Content-Type: text/html; charset=UTF-8\r\n";
+	ss << "Content-Length: " << 0 << "\r\n";
+	ss << "\r\n";
+	header = ss.str();
 
 	return header;
 }
